@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imgRecipeRowQuickPic"
+        android:layout_height="70dp"
+        android:layout_width="70dp"
+        android:src="@mipmap/ic_launcher"
+        />
+
+    <TextView
+        android:id="@+id/tvIngredientName"
+        android:text="@string/filler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgRecipeRowQuickPic"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvIngredientAmount"
+        android:text="@string/filler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgRecipeRowQuickPic"
+        android:layout_below="@id/tvIngredientName"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        />
+
+</RelativeLayout>

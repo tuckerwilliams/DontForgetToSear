@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/relLayNestedLayoutAddRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="300dp"
+                    android:layout_height="100dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tvRecipeName"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <Spinner
+                    android:id="@+id/btnSpinnerForStepOrIngredient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="viewEnd"
+                    android:gravity="end"
+                    android:entries="@array/spinnerArrayStepOrIngredient" />
+
+                <LinearLayout
+                    android:id="@+id/add_layoutWithEditTexts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etAddStepOrIngredient"
+                        android:layout_width="250dp"
+                        android:layout_height="50dp"
+                        android:hint="should be dynamic.."
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/etIngredientQuantity"
+                        android:layout_width="75dp"
+                        android:layout_height="50dp"
+                        android:hint="@string/quantity"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnAddStepOrIngredient"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/add_layoutWithEditTexts"
+                    android:text="+" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/addRecipeRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

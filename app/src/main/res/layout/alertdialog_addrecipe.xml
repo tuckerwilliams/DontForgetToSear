@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/alert_addrecipename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/recipe_name" />
+
+    <EditText
+        android:id="@+id/alert_addrecipeservings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/alert_addrecipename"
+        android:hint="@string/alert_servings_prompt"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/spinnerRecipeCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/alert_addrecipeservings"
+        android:prompt="@string/prompt_typeofrecipe"
+        android:entries="@array/spinnerRecipeCategory"/>
+
+</RelativeLayout>
