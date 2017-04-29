@@ -2,18 +2,40 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:textSize="24sp"
-            android:textStyle="italic"
-            android:textAlignment="center"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvRecipeNameDisplayRecipeFrag"/>
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgDisplayRecipePicture"
+                android:layout_width="190dp"
+                android:layout_height="240dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:adjustViewBounds="false"
+                android:contentDescription="@string/content_description_recipePicture"
+                android:src="@drawable/desserts_thumbail" />
+
+            <TextView
+                android:id="@+id/tvRecipeNameDisplayRecipeFrag"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="13dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@+id/imgDisplayRecipePicture"
+                android:layout_toRightOf="@+id/imgDisplayRecipePicture"
+                android:textSize="24sp"
+                android:textStyle="italic" />
+
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/displayRecipeRecyclerView"
