@@ -30,4 +30,6 @@
     <string name="recipe_name">Recipe Name</string>
     <string name="alert_servings_prompt">How many does it serve?</string>
     <string name="edit">edit</string>
+    <string name="plus_sign">+</string>
+    <string name="content_description_recipePicture">The image of the recipe.</string>
 </resources>
