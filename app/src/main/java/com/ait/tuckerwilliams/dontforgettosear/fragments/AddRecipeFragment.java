@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -108,6 +108,8 @@ public class AddRecipeFragment extends Fragment implements View.OnClickListener 
         tvRecipeName.setText(mRecipeName);
         stepIngredientSpinner = (Spinner) view.findViewById(R.id.btnSpinnerForStepOrIngredient);
         EditText etQuantity = (EditText) view.findViewById(R.id.etIngredientQuantity);
+        ImageView imgRecipe = (ImageView) view.findViewById(R.id.imgRecipePicture);
+        imgRecipe.setImageResource(setRecipeImage(mRecipeType));
 
         setupSpinnerListener(etQuantity);
         setupRecyclerView(view, rv);
@@ -244,6 +246,39 @@ public class AddRecipeFragment extends Fragment implements View.OnClickListener 
                 break;
             default:
                 break;
+        }
+    }
+
+    public int setRecipeImage(String type) {
+        switch (type) {
+            case "Burgers":
+                return (R.drawable.burgers_thumbnail);
+            case "Beans, Grains, Legume":
+                return (R.drawable.bean_thumbnail);
+            case "Bread, Rolls, Muffins":
+                return (R.drawable.bread_roll_thumbnail);
+            case "Cakes, Cupcakes":
+                return (R.drawable.cakes_thumbnail);
+            case "Cocktail":
+                return (R.drawable.cocktails_thumbnail);
+            case "Desserts":
+                return (R.drawable.desserts_thumbail);
+            case "Non-alcoholic drinks":
+                return (R.drawable.nonalcoholicdrink_thumbnail);
+            case "Pasta, Noodles":
+                return (R.drawable.pasta_thumbnail);
+            case "Pies":
+                return (R.drawable.pies_thumbnail);
+            case "Pizza":
+                return (R.drawable.pizzas_thumbnail);
+            case "Salad":
+                return (R.drawable.salad_thumbnail);
+            case "Sandwiches":
+                return (R.drawable.sandwiches_thumbnail);
+            case "Soups, Stews":
+                return (R.drawable.soups_thumnail);
+            default:
+                return (R.mipmap.ic_launcher);
         }
     }
 
