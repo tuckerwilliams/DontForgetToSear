@@ -1,19 +1,22 @@
 package com.ait.tuckerwilliams.dontforgettosear.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ait.tuckerwilliams.dontforgettosear.R;
+import com.ait.tuckerwilliams.dontforgettosear.adapter.ShoppingListAdapter;
 import com.ait.tuckerwilliams.dontforgettosear.data.Ingredient;
-
-import java.util.List;
+import com.ait.tuckerwilliams.dontforgettosear.gui.RecyclerViewDivider;
+import com.ait.tuckerwilliams.dontforgettosear.touch.ItemTouchHelperCallback;
 
 /**
  * A fragment representing a list of Items.
@@ -27,6 +30,7 @@ public class ShoppingListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+    private ShoppingListAdapter mAdapter;
     private OnShoppingListFragmentInteractionListener mListener;
 
     /**
@@ -58,20 +62,36 @@ public class ShoppingListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shoppinglist, container, false);
+        View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-//            recyclerView.setAdapter(new MyShoppingListRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
+        RecyclerView rv = (RecyclerView) view.findViewById(R.id.shoppingListRecyclerView);
+        setUpRecyclerView(view, rv);
+
         return view;
+    }
+
+
+    private void setUpRecyclerView(View view, RecyclerView rv) {
+        if (rv != null) {
+            Context context = view.getContext();
+            //RecyclerView recyclerView = (RecyclerView) view;
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), OrientationHelper.VERTICAL, false);
+            rv.setLayoutManager(linearLayoutManager);
+
+            //Get the RealmResults list.
+            //Todo: Control for empty RealmResults?
+            mAdapter = new ShoppingListAdapter(context);
+            rv.setAdapter(mAdapter);
+
+            // adding touch support
+            ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mAdapter);
+            ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+            touchHelper.attachToRecyclerView(rv);
+
+            //TODO: This was causing casting problems. Fix it!
+            RecyclerViewDivider decoration = new RecyclerViewDivider(getContext(), Color.GRAY, 1.5f);
+            rv.addItemDecoration(decoration);
+        }
     }
 
 
@@ -104,6 +124,6 @@ public class ShoppingListFragment extends Fragment {
      */
     public interface OnShoppingListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Ingredient item);
+        void onShoppingListFragmentInteraction(Ingredient item);
     }
 }
