@@ -6,7 +6,7 @@
     <string name="action_saveRecipe">Save</string>
     <string name="action_searchRecipe">Search</string>
 
-    <string name="format_ingredient" formatted="false">"        \u2022      %s"</string>
+    <string name="format_ingredient" formatted="false">"%s"</string>
     <string name="format_ingredient_amount" formatted="false">" - (%s)"</string>
     <string name="format_step" formatted="false">"   %d. %s"</string>
     <string name="format_recipe_category" formatted="false">"(%s) Serves %s."</string>
