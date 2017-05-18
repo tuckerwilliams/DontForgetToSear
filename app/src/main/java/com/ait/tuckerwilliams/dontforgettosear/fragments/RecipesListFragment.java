@@ -2,15 +2,11 @@ package com.ait.tuckerwilliams.dontforgettosear.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,15 +19,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.ait.tuckerwilliams.dontforgettosear.MainActivity;
 import com.ait.tuckerwilliams.dontforgettosear.R;
 import com.ait.tuckerwilliams.dontforgettosear.adapter.RecipesListAdapter;
 import com.ait.tuckerwilliams.dontforgettosear.data.Recipe;
-import com.ait.tuckerwilliams.dontforgettosear.gui.RecyclerViewDivider;
 import com.ait.tuckerwilliams.dontforgettosear.touch.ItemTouchHelperCallback;
+import com.gc.materialdesign.views.ButtonFloat;
 
 import java.util.ArrayList;
 
@@ -41,46 +40,28 @@ import static android.view.View.inflate;
 
 //TODO: Give credit to http://www.foodandwine.com/recipe-finder/dish-types for THUMBNAILS!
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnRecipeFragmentListener}
- * interface.
- */
 public class RecipesListFragment extends Fragment {
 
-    //Todo goal: Allow users to add their own recipe categories. How find thumbnail image, though?
-
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private static final String ARG_RECIPE_NAME = "name";
-    private static final String ARG_RECIPE_DESC = "description";
 
     private RecipesListAdapter mAdapter;
 
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private OnRecipeFragmentListener mListener;
-    private Activity activity;
-    private Context context;
     private Realm realm;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+    private int mColumnCount = 1;
+    private OnRecipesListFragmentListener mListener;
+    private Activity activity;
+    private Context context;
+
     public RecipesListFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static RecipesListFragment newInstance(int columnCount, String recipeName,
-                                                  String recipeDescrption) {
+    public static RecipesListFragment newInstance(int columnCount) {
         RecipesListFragment fragment = new RecipesListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
-        args.putString(ARG_RECIPE_NAME, recipeName);
-        args.putString(ARG_RECIPE_DESC, recipeDescrption);
         fragment.setArguments(args);
         return fragment;
     }
@@ -100,71 +81,73 @@ public class RecipesListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_recipes_list, container, false);
         RecyclerView rv = (RecyclerView) view.findViewById(R.id.nestedRecyclerView);
-        Button btnAddRecipe = (Button) view.findViewById(R.id.addRecipe);
-        Spinner recipeTypeSpinner = (Spinner) view.findViewById(R.id.spinnerRecipeCategory);
+        ButtonFloat btnAddRecipe = (ButtonFloat) view.findViewById(R.id.addRecipe);
 
         setupBtnAddRecipeListener(btnAddRecipe);
-
-        // Set the adapter
         setUpRecyclerView(view, rv);
-
-//        Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbarTop);
-//        toolbar.setTitle("");
-//        ((AppCompatActivity) activity).setSupportActionBar(toolbar);
-//        setHasOptionsMenu(true);
+        setupToolbar();
 
         return view;
     }
 
-    private void setupBtnAddRecipeListener(Button btnAddRecipe) {
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbarTop);
+        toolbar.setTitle("");
+        //toolbar.setDisplayShowTitleEnabled(false); //TODO-// FIXME: 5/10/17
+        TextView tbTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        tbTitle.setText(R.string.tb_my_recipes_title);
+        ((AppCompatActivity) activity).setSupportActionBar(toolbar);
+        setHasOptionsMenu(true);
+    }
+
+    private void setupBtnAddRecipeListener(ButtonFloat btnAddRecipe) {
         btnAddRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //Todo: Set up MultiSpinner to allow user to give Recipe categories, e.g., chicken
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                //final EditText userInput = new EditText(context);
-                //userInput.setHint("Name...");
                 final View alertView = inflate(context, R.layout.alertdialog_addrecipe, null);
-                builder.setView(alertView);
-                builder.setTitle("Tell us a little about the recipe...")
-                        .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                FragmentManager fragmentManager2 = getFragmentManager();
-                                FragmentTransaction fragmentTransaction2 =
-                                        fragmentManager2.beginTransaction();
-                                //Todo: Ensure non-null name of recipe. Set Error on the Builder button?
-                                EditText etName = (EditText) alertView.findViewById(
-                                        R.id.alert_addrecipename);
-                                EditText etServings = (EditText) alertView.findViewById(
-                                        R.id.alert_addrecipeservings);
-                                Spinner spinner = setupRecipeCategorySpinner(alertView);
+                MaterialDialog.Builder mdb = new MaterialDialog.Builder(getActivity())
+                        .title("Tell us about the recipe...").customView(alertView, true);
 
-                                checkIfAddRecipeNameNull(fragmentManager2, etName, etServings, spinner);
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                            }
-                        });
-                // Create the AlertDialog object and return it
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                mdb.positiveText("Done");
+                mdb.negativeText("Cancel");
+
+                final EditText etName = (EditText) alertView.findViewById(
+                        R.id.alert_addrecipename);
+                final EditText etServings = (EditText) alertView.findViewById(
+                        R.id.alert_addrecipeservings);
+                final Spinner spinner = setupRecipeCategorySpinner(alertView);
+
+                etName.setError("Can't be empty!");
+                etServings.setError("Can't be empty!");
+
+                mdb.onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        //Todo: Ensure non-null name of recipe. Set Error on the Builder button?
+                        checkIfAddRecipeNameNull(etName, etServings, spinner);
+                    }
+                }).onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        // TODO
+                    }
+                });
+
+                mdb.show();
             }
         });
     }
 
     private Spinner setupRecipeCategorySpinner(View alertView) {
-        Spinner recipeTypeSpinner = (Spinner) alertView.findViewById(
-                R.id.spinnerRecipeCategory);
-        return recipeTypeSpinner;
+        return (Spinner) alertView.findViewById(R.id.spinnerRecipeCategory);
     }
 
-    private void checkIfAddRecipeNameNull(FragmentManager fragmentManager2, EditText etName,
-                                          EditText etServings, Spinner spinner) {
-        if (etName.getText().toString() != null) {
+    private void checkIfAddRecipeNameNull(EditText etName, EditText etServings, Spinner spinner) {
+        FragmentManager fragmentManager2 = getFragmentManager();
+
+        if (!etName.getText().toString().equalsIgnoreCase("")
+                && !etServings.getText().toString().equalsIgnoreCase("")) {
             AddRecipeFragment recipeFragment = AddRecipeFragment.newInstance(
                     etName.getText().toString(), etServings.getText().toString(),
                     spinner.getSelectedItem().toString());
@@ -177,37 +160,48 @@ public class RecipesListFragment extends Fragment {
     }
 
     private void setUpRecyclerView(View view, RecyclerView rv) {
-        if (rv instanceof RecyclerView) {
+        if (rv != null) {
             Context context = view.getContext();
-            //RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                rv.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                rv.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
 
-            //Get the RealmResults list.
-            //Todo: Control for empty RealmResults?
-            Realm realm = Realm.getDefaultInstance();
-            ArrayList<Recipe> list = new ArrayList(realm.where(Recipe.class).findAll());
-
-            mAdapter = new RecipesListAdapter(list, mListener, context);
-            rv.setAdapter(mAdapter);
-
-            // adding touch support
-            ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mAdapter);
-            ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-            touchHelper.attachToRecyclerView(rv);
-
-            //TODO: This was causing casting problems. Fix it!
-            RecyclerViewDivider decoration = new RecyclerViewDivider(getContext(), Color.GRAY, 1.5f);
-            rv.addItemDecoration(decoration);
+            setRecyclerViewColumnCount(rv, context);
+            prepareRecyclerViewAdapter(view, rv, context);
+            setupTouchSupport(rv);
         }
+    }
+
+    private void setRecyclerViewColumnCount(RecyclerView rv, Context context) {
+        if (mColumnCount <= 1) {
+            rv.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            rv.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        }
+    }
+
+    private void prepareRecyclerViewAdapter(View view, RecyclerView rv, Context context) {
+        ArrayList<Recipe> list = new ArrayList<>(realm.where(Recipe.class).findAll());
+
+        mAdapter = new RecipesListAdapter(list, context);
+        rv.setAdapter(mAdapter);
+
+        if (mAdapter.getItemCount() == 0) {
+            TextView tvEmptyAdapter = (TextView) view.findViewById(R.id.tvEmptyAdapter);
+            tvEmptyAdapter.setVisibility(View.VISIBLE);
+            tvEmptyAdapter.setText(String.format(getString(R.string.format_empty_adapter), "recipes"));
+        } else {
+            TextView tvEmptyAdapter = (TextView) view.findViewById(R.id.tvEmptyAdapter);
+            tvEmptyAdapter.setVisibility(View.GONE);
+        }
+    }
+
+    private void setupTouchSupport(RecyclerView rv) {
+        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(rv);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.recipelist, menu);
+        inflater.inflate(R.menu.menu_recipe_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -215,12 +209,11 @@ public class RecipesListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_add:
-                // do stuff
-                return true;
-
-            case R.id.action_search:
+            case R.id.action_search_for_recipe:
                 // do more stuff
+                return true;
+            case R.id.action_opensettings:
+                ((MainActivity) activity).openSettingsFragment();
                 return true;
         }
 
@@ -233,32 +226,25 @@ public class RecipesListFragment extends Fragment {
         super.onAttach(context);
         this.activity = getActivity();
         this.context = getContext();
-        if (context instanceof OnRecipeFragmentListener) {
-            mListener = (OnRecipeFragmentListener) context;
+        realm = Realm.getDefaultInstance();
+
+        if (context instanceof OnRecipesListFragmentListener) {
+            mListener = (OnRecipesListFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement onRecipeListFragmentListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        realm.close();
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnRecipeFragmentListener {
+    public interface OnRecipesListFragmentListener {
         // TODO: Update argument type and name
-        void onRecipeFragmentListener(Uri uri);
+        void onRecipeListFragmentListener();
     }
 }
