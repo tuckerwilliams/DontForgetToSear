@@ -1,65 +1,48 @@
 package com.ait.tuckerwilliams.dontforgettosear;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ait.tuckerwilliams.dontforgettosear.data.Ingredient;
 import com.ait.tuckerwilliams.dontforgettosear.fragments.AddRecipeFragment;
 import com.ait.tuckerwilliams.dontforgettosear.fragments.DisplayRecipeFragment;
-import com.ait.tuckerwilliams.dontforgettosear.fragments.EmptyFragment;
+import com.ait.tuckerwilliams.dontforgettosear.fragments.PinnedRecipeFragment;
 import com.ait.tuckerwilliams.dontforgettosear.fragments.RecipesListFragment;
+import com.ait.tuckerwilliams.dontforgettosear.fragments.SettingsFragment;
 import com.ait.tuckerwilliams.dontforgettosear.fragments.ShoppingListFragment;
 
+//Todo: Remove 'portrait' declaration from manifest, handle fragment orientation change.
+
 public class MainActivity extends AppCompatActivity
-        implements RecipesListFragment.OnRecipeFragmentListener,
+        implements RecipesListFragment.OnRecipesListFragmentListener,
         AddRecipeFragment.OnSingleRecipeFragmentInteractionListener,
         DisplayRecipeFragment.OnDisplayRecipeFragmentInteractionListener,
-        EmptyFragment.OnEmptyFragmentListener,
-        ShoppingListFragment.OnShoppingListFragmentInteractionListener{
+        ShoppingListFragment.OnShoppingListFragmentInteractionListener,
+        PinnedRecipeFragment.OnPinnedRecipeFragmentListener,
+        SettingsFragment.OnSettingsFragmentInteractionListener {
 
-    private TextView mTextMessage;
-    private static int CURR_FRAGMENT = 0;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    public static final String TAG_RECIPES_LIST_FRAG = "RecipesList";
+    private static final String TAG_PINNED_RECIPES_FRAG = "PinnedRecipes";
+    private static final String TAG_SHOPPING_LIST_FRAG = "ShoppingList";
+    private static final String TAG_SETTINGS_FRAG = "Settings";
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_pinned:
-//                    mTextMessage.setText(R.string.title_pinned);
-                    //Todo: Add Pinned Recipe Fragment
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainUIContainer, new EmptyFragment(),
-                            "EMPTY_TEST_FRAG").commit();
+                    openPinnedRecipeFragment();
                     return true;
                 case R.id.navigation_recipes:
                     openRecipesListFragment();
                     return true;
                 case R.id.navigation_shoppingList:
-                    //Todo: Add Shopping List Fragment
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainUIContainer, new EmptyFragment(),
-                            "EMPTY_TEST_FRAG").commit();
-//                    mTextMessage.setText(R.string.title_shoppingList);
-                    return true;
-                case R.id.navigation_timer:
-                    //Todo: Add Timer Fragment
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainUIContainer, new EmptyFragment(),
-                            "EMPTY_TEST_FRAG").commit();
-//                    mTextMessage.setText(R.string.title_timer);
-                    return true;
-                case R.id.navigation_settings:
-                    //Todo: Add Settings Fragment
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainUIContainer, new EmptyFragment(),
-                            "EMPTY_TEST_FRAG").commit();
-//                    mTextMessage.setText(R.string.title_settings);
+                    openShoppingListFragment();
                     return true;
             }
             return false;
@@ -67,61 +50,136 @@ public class MainActivity extends AppCompatActivity
 
     };
 
-    private void openRecipesListFragment() {
-        if (findViewById(R.id.mainUIContainer) != null) {
-//                        if (savedInstanceState == null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.mainUIContainer, RecipesListFragment.newInstance(1, "RecipesList", "RecipeDesc")
-                                , "RECIPES_LIST")
-                        .commit();
-//                        }
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        //Todo: Add Settings Option to choose opening fragment. For now, open Pinned.
+        openPinnedRecipeFragment();
+    }
+
+    private void openRecipesListFragment() {
+        if (findViewById(R.id.mainUIContainer) != null) {
+//            if (savedInstanceState == null) {
+            Fragment mFragment = getSupportFragmentManager().findFragmentByTag(TAG_RECIPES_LIST_FRAG);
+            getFragmentManager().executePendingTransactions();
+            if (mFragment != null && !mFragment.isAdded()) {
+                if (mFragment instanceof RecipesListFragment) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.mainUIContainer, mFragment)
+                            .commit();
+                }
+            } else {
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.mainUIContainer, RecipesListFragment.newInstance(1)
+                                , TAG_RECIPES_LIST_FRAG)
+                        .commit();
+            }
+        }
+    }
+
+    private void openShoppingListFragment() {
+
+        if (findViewById(R.id.mainUIContainer) != null) {
+//            if (savedInstanceState == null) {
+            Fragment mFragment = getSupportFragmentManager().findFragmentByTag(TAG_SHOPPING_LIST_FRAG);
+            getFragmentManager().executePendingTransactions(); //execute transactions before call to isAdded()
+            if (mFragment != null && !mFragment.isAdded()) {
+                if (mFragment instanceof ShoppingListFragment) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.mainUIContainer, mFragment)
+                            .commit();
+                }
+            } else {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.mainUIContainer, ShoppingListFragment.newInstance()
+                                , TAG_SHOPPING_LIST_FRAG)
+                        .commit();
+            }
+        }
+    }
+
+    private void openPinnedRecipeFragment() {
+        if (findViewById(R.id.mainUIContainer) != null) {
+//            if (savedInstanceState == null) {
+            Fragment mFragment = getSupportFragmentManager().findFragmentByTag(TAG_PINNED_RECIPES_FRAG);
+            getFragmentManager().executePendingTransactions();
+            if (mFragment != null && !mFragment.isAdded()) {
+                if (mFragment instanceof PinnedRecipeFragment) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.mainUIContainer, mFragment)
+                            .commit();
+                }
+            } else {
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.mainUIContainer, PinnedRecipeFragment.newInstance(1)
+                                , TAG_PINNED_RECIPES_FRAG)
+                        .commit();
+            }
+        }
+    }
+
+    public void openSettingsFragment() {
+        if (findViewById(R.id.mainUIContainer) != null) {
+//            if (savedInstanceState == null) {
+            Fragment mFragment = getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAG);
+            getFragmentManager().executePendingTransactions();
+            if (mFragment != null && !mFragment.isAdded()) {
+                if (mFragment instanceof SettingsFragment) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.mainUIContainer, mFragment).addToBackStack(null)
+                            .commit();
+                }
+            } else {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.mainUIContainer, SettingsFragment.newInstance("Settings")
+                                , TAG_SETTINGS_FRAG).addToBackStack(null)
+                        .commit();
+            }
+        }
+    }
+
+
+    public void onRecipeListFragmentListener() {
+
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void onRecipeFragmentListener(Uri uri) {
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction ft = fragmentManager.beginTransaction();
-        DisplayRecipeFragment displayRecipe = (DisplayRecipeFragment.newInstance("displayRecipe", "displayRecipe"));
-
-        fragmentManager.beginTransaction()
-                .replace(R.id.mainUIContainer, displayRecipe, "singleRecipeFragment")
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void onSingleRecipeFragmentInteraction(Uri uri) {
+    public void onSingleRecipeFragmentInteraction() {
         Toast.makeText(this, "Clicked on add recipe button!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onDisplayRecipeFragmentInteraction(Uri uri) {
+    public void onDisplayRecipeFragmentInteraction() {
         Toast.makeText(this, "Clicked on a single recipe!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onShoppingListFragmentInteraction() {
 
     }
 
     @Override
-    public void onListFragmentInteraction(Ingredient item) {
+    public void onPinnedRecipeFragmentInteraction() {
+
+    }
+
+    @Override
+    public void onSettingsFragmentInteraction() {
 
     }
 }

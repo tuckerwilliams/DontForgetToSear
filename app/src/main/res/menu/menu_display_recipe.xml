@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_pin_recipe"
+        android:icon="@drawable/pin_off"
+        android:title="@string/pin"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_add_all_to_groceries"
+        android:title="@string/add_all_to_groceries"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_opensettings"
+        android:title="@string/settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_edit_recipe"
+        android:title="@string/add_to_recipe"
+        app:showAsAction="never" />
+</menu>

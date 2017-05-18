@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_clear_all_groceries"
+        android:title="@string/remove_all_groceries"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_clear_all_crossed_off_groceries"
+        android:title="@string/remove_crossed_off_groceries"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_opensettings"
+        android:title="@string/settings"
+        app:showAsAction="never" />
+</menu>

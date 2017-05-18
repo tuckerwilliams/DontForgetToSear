@@ -9,7 +9,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
-    private ItemTouchHelperAdapter itemTouchHelperAdaptor;
+    private final ItemTouchHelperAdapter itemTouchHelperAdaptor;
 
     public ItemTouchHelperCallback(ItemTouchHelperAdapter itemTouchHelperAdaptor) {
         this.itemTouchHelperAdaptor = itemTouchHelperAdaptor;
@@ -29,6 +29,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+        //TODO: Don't allow swipe of SimpleSectionedRecyclerView
         int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
         return makeMovementFlags(dragFlags, swipeFlags);
     }
@@ -36,8 +37,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
         itemTouchHelperAdaptor.onItemMove(viewHolder.getAdapterPosition(),
-                target.getAdapterPosition()
-        );
+                target.getAdapterPosition());
         return true;
     }
 
