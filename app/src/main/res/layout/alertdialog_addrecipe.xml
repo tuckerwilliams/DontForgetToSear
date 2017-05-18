@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/alert_addrecipename"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/recipe_name" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/alert_addrecipeservings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/alert_addrecipeservings"
-        android:prompt="@string/prompt_typeofrecipe"
-        android:entries="@array/spinnerRecipeCategory"/>
+        android:entries="@array/spinnerRecipeCategory"
+        android:prompt="@string/prompt_typeofrecipe" />
 
 </RelativeLayout>

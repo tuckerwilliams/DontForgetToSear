@@ -28,6 +28,7 @@
             android:textColor="@color/colorTitleWhite"
             android:textSize="24sp" />
 
+
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
