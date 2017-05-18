@@ -1,6 +1,5 @@
 package com.ait.tuckerwilliams.dontforgettosear.data;
 
-import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -12,7 +11,7 @@ public class Ingredient extends RealmObject { //implements comparable.
     private String id;
 
     private String mDescription, mName;
-    private int mType;
+    private boolean isCheckedOff;
 
     public String getmName() {
         return mName;
@@ -28,19 +27,20 @@ public class Ingredient extends RealmObject { //implements comparable.
         this.mDescription = mDescription;
     }
 
-    public int getmType() {
-        return mType;
-    }
-    public void setmType(int mType) {
-        this.mType = mType;
-    }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isCheckedOff() {
+        return isCheckedOff;
+    }
+
+    public void setCheckedOff(boolean checkedOff) {
+        isCheckedOff = checkedOff;
     }
 }
 
