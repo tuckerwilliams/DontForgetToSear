@@ -14,32 +14,64 @@
 
             <ImageView
                 android:id="@+id/imgDisplayRecipePicture"
-                android:layout_width="190dp"
+                android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:adjustViewBounds="false"
-                android:contentDescription="@string/content_description_recipePicture"
-                android:src="@drawable/desserts_thumbail" />
-
-            <TextView
-                android:id="@+id/tvRecipeNameDisplayRecipeFrag"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="13dp"
-                android:layout_marginStart="13dp"
-                android:layout_marginTop="20dp"
-                android:layout_toEndOf="@+id/imgDisplayRecipePicture"
-                android:layout_toRightOf="@+id/imgDisplayRecipePicture"
-                android:textSize="24sp"
-                android:textStyle="italic" />
+                android:contentDescription="@string/content_description_recipePicture" />
 
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/displayRecipeRecyclerView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvDisplayIngredientsSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/ingredients"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/displayIngredientsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDisplayIngredientsSection" />
+
+            <TextView
+                android:id="@+id/tvDisplayDirectionsSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/displayIngredientsRecyclerView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/directions"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/addedDirectionsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tvDisplayDirectionsSection" />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/displayDirectionsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

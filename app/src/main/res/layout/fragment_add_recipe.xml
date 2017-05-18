@@ -14,69 +14,82 @@
 
             <ImageView
                 android:id="@+id/imgRecipePicture"
-                android:layout_width="190dp"
+                android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:adjustViewBounds="false"
                 android:contentDescription="@string/content_description_recipePicture"
-                android:src="@drawable/desserts_thumbail" />
-
-            <TextView
-                android:id="@+id/tvRecipeName"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="13dp"
-                android:layout_marginStart="13dp"
-                android:layout_marginTop="20dp"
-                android:layout_toEndOf="@+id/imgRecipePicture"
-                android:layout_toRightOf="@+id/imgRecipePicture"
-                android:textSize="24sp"
-                android:textStyle="italic" />
+                android:src="@drawable/cakes_thumbnail" />
 
         </RelativeLayout>
 
-        <Spinner
-            android:id="@+id/btnSpinnerForStepOrIngredient"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/spinnerArrayStepOrIngredient"
-            android:gravity="end"
-            android:textAlignment="viewEnd" />
-
-        <LinearLayout
-            android:id="@+id/add_layoutWithEditTexts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/etAddStepOrIngredient"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
-                android:hint=""
-                android:visibility="visible" />
-
-            <EditText
-                android:id="@+id/etIngredientQuantity"
-                android:layout_width="75dp"
-                android:layout_height="50dp"
-                android:hint="@string/quantity"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnAddStepOrIngredient"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/plus_sign" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/addRecipeRecyclerView"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvIngredientsSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/ingredients"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/addedIngredientsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvIngredientsSection" />
+
+            <ImageView
+                android:id="@+id/imgPlusIngredient"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@id/tvIngredientsSection"
+                android:layout_marginLeft="100dp"
+                android:layout_toRightOf="@id/tvIngredientsSection"
+                android:contentDescription="@string/content_description_add_ingredient"
+                android:src="@drawable/plus" />
+
+            <TextView
+                android:id="@+id/tvDirectionsSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addedIngredientsRecyclerView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/directions"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/addedDirectionsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tvDirectionsSection" />
+
+            <ImageView
+                android:id="@+id/imgPlusDirection"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/tvDirectionsSection"
+                android:layout_alignLeft="@id/imgPlusIngredient"
+                android:layout_alignStart="@id/imgPlusIngredient"
+                android:contentDescription="@string/content_description_add_direction"
+                android:src="@drawable/plus" />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
