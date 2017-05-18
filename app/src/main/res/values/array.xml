@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="spinnerArrayStepOrIngredient">
-        <item>Ingredient</item>
-        <item>Step</item>
-    </string-array>
-
     <string-array name="spinnerRecipeCategory">
         <item>Beans, Grains, Legume</item>
         <item>Bread, Rolls, Muffins</item>
