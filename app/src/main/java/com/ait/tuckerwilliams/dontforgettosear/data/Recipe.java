@@ -4,10 +4,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-/**
- * Created by tuckerwilliams on 4/17/17.
- */
-
 public class Recipe extends RealmObject {// implements Comparable<Recipe> {
 
     @PrimaryKey
@@ -16,7 +12,13 @@ public class Recipe extends RealmObject {// implements Comparable<Recipe> {
     private String recipeName;
     private String recipeType;
     private String recipeServings;
-    private RealmList<Ingredient> mList;
+
+    private String recipeImg;
+
+    private boolean pinned;
+
+    private RealmList<Ingredient> mIngredientList;
+    private RealmList<Direction> mDirectionList;
 
     public String getRecipeName() {
         return recipeName;
@@ -25,12 +27,12 @@ public class Recipe extends RealmObject {// implements Comparable<Recipe> {
         this.recipeName = recipeName;
     }
 
-    public RealmList<Ingredient> getmList() {
-        return mList;
+    public RealmList<Ingredient> getmIngredientList() {
+        return mIngredientList;
     }
 
-    public void setmList(RealmList<Ingredient> mList) {
-        this.mList = mList;
+    public void setmIngredientList(RealmList<Ingredient> mList) {
+        this.mIngredientList = mList;
     }
 
     public String getId() {
@@ -55,6 +57,30 @@ public class Recipe extends RealmObject {// implements Comparable<Recipe> {
 
     public void setRecipeServings(String recipeServings) {
         this.recipeServings = recipeServings;
+    }
+
+    public RealmList<Direction> getmDirectionList() {
+        return mDirectionList;
+    }
+
+    public void setmDirectionList(RealmList<Direction> mDirectionList) {
+        this.mDirectionList = mDirectionList;
+    }
+
+    public boolean isPinned() {
+        return pinned;
+    }
+
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
+    }
+
+    public String getRecipeImg() {
+        return recipeImg;
+    }
+
+    public void setRecipeImg(String recipeImg) {
+        this.recipeImg = recipeImg;
     }
 }
 
