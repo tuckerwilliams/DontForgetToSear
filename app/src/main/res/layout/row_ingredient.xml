@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.gc.materialdesign.views.CheckBox
+        android:id="@+id/cbIngredientDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#1E88E5" />
+
+    <ImageView
+        android:id="@+id/imgEditRecipeIngredientOrStep"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/content_description_button_to_edit_ingredient"
+        android:src="@drawable/lead_pencil" />
+
+    <LinearLayout
+        android:id="@+id/linLayoutTVRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@id/cbIngredientDone"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:id="@+id/tvIngredientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filler"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvIngredientAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filler"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textStyle="italic" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/linLayoutTVRecipe"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimary" />
+
+</RelativeLayout>
